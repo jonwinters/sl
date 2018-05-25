@@ -41,6 +41,7 @@
 #include "sl.h"
 #include <curses.h>
 #include <signal.h>
+#include <stdlib.h>
 #include <unistd.h>
 
 void add_smoke(int y, int x);
@@ -89,7 +90,13 @@ void option(char *str) {
   }
 }
 
+void signal_handle(int signal) {
+    endwin();
+    exit(0);
+}
+
 int main(int argc, char *argv[]) {
+  signal(SIGINT, signal_handle);
   while (true) {
     int x, i;
 
@@ -99,7 +106,6 @@ int main(int argc, char *argv[]) {
       }
     }
     initscr();
-    signal(SIGINT, SIG_IGN);
     noecho();
     curs_set(0);
     nodelay(stdscr, TRUE);
